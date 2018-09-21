@@ -78,11 +78,11 @@
 
     var last_redraw_time = get_time();
 
-    function update_animation_parameters(elapsed_time) {
+    function update_animation_parameters(elapsed_time_sec) {
     	//обновить параметры, зная прошедшее время.
+    	//допустим, скорость изменения x - это SPEED_x.
     	//для определенности SPEED_x = 10 пикселей в секунду
-        x += SPEED_x * elapsed_time_sec;
-
+    	x += SPEED_x * elapsed_time_sec;
     }
 
     function animation_step() {
@@ -92,9 +92,10 @@
         var elapsed_time = current_time - last_redraw_time;
         last_redraw_time = current_time;
 
-        update_animation_parameters(elapsed_time);
+        update_animation_parameters(elapsed_time / 1000);
         draw();
     }
+
 
 
 

@@ -22,10 +22,10 @@ function init() {
     var dx = 1;
     var dy = 1;
 
-    var balls = [{x:80, y:120, r:40, dx:1, dy:1},
-                 {x:80, y:250, r:40, dx:2, dy:0.5},
-                 {x:180, y:120, r:40, dx:4, dy:1},
-                 {x:180, y:210, r:40, dx:3, dy:0.5}];
+    var balls = [{x:80, y:120, r:40, dx:10, dy:10},
+                 {x:80, y:250, r:40, dx:20, dy:5},
+                 {x:180, y:120, r:40, dx:40, dy:10},
+                 {x:180, y:210, r:40, dx:30, dy:5}];
 
     ctx.beginPath();
     ctx.arc(x, y, r, 0, 180);
@@ -34,6 +34,8 @@ function init() {
     function get_time() {
         return new Date().getTime();
     }
+
+    var last_redraw_time = get_time();
 
     function draw() {
         //здесь перерисовывается содержимое экрана
@@ -49,20 +51,21 @@ function init() {
         }
     }
 
-
-    function update_animation_parameters() {
+    function update_animation_parameters(elapsed_time_sec) {
         //здесь обновляем значение всех анимируемых параметров
         for (var i = 0; i < balls.length; i++) {
             if (balls[i].x > rectX + rectWidth - balls[i].r || balls[i].x < rectX + balls[i].r)
                 balls[i].dx = -balls[i].dx;
             if (balls[i].y > rectY + rectHeigth - balls[i].r || balls[i].y < rectY + balls[i].r)
                 balls[i].dy = -balls[i].dy;
-            balls[i].x += balls[i].dx;
-            balls[i].y += balls[i].dy;
+            balls[i].x += balls[i].dx * elapsed_time_sec;
+            balls[i].y += balls[i].dy * elapsed_time_sec;
         }
 
-        /*for (var i = 0; i < balls.length; i++)
-            for (var j = 0; j < balls.length; j++)
+        //x += SPEED_x * elapsed_time_sec;
+
+        for (var i = 0; i < balls.length; i++)
+            for (var j = i + 1; j < balls.length; j++)
                 if ((balls[i].r + balls[j].r) * (balls[i].r + balls[j].r) >
                     (balls[i].x - balls[j].x) * (balls[i].x - balls[j].x) +
                     (balls[i].y - balls[j].y) * (balls[i].y - balls[j].y)) {
@@ -71,13 +74,21 @@ function init() {
                     balls[i].dy = -balls[i].dy;
                     balls[j].dx = -balls[j].dx;
                     balls[j].dy = -balls[j].dy;
-                }*/
+                }
     }
 
     function animation_step() {
         //эта функция должна постоянно вызываться
         requestAnimationFrame(animation_step);
-        update_animation_parameters();
+
+        var current_time = get_time();
+        var elapsed_time = current_time - last_redraw_time;
+        last_redraw_time = current_time;
+
+        if (elapsed_time > 1)
+            elapsed_time = 1;
+
+        update_animation_parameters(elapsed_time / 1000);
         draw();
     }
 
