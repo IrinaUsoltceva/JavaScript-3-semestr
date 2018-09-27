@@ -29,7 +29,9 @@ function init() {
 
     ctx.beginPath();
     ctx.arc(x, y, r, 0, 180);
-    ctx.stroke();
+
+    SPEED_x = 1000;
+    SPEED_y = 1000;
 
     function get_time() {
         return new Date().getTime();
