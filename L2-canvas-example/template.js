@@ -15,10 +15,10 @@ function init() {
     ctx.fillRect(rectX, rectY, rectWidth, rectHeigth);
 
     //заведем параметры анимации
-    var balls = [{x:80, y:120, r:40, dx:10, dy:10},
-                 {x:80, y:250, r:30, dx:20, dy:5},
-                 {x:180, y:120, r:20, dx:40, dy:10},
-                 {x:180, y:210, r:50, dx:30, dy:5}];
+    var balls = [{x:80, y:120, r:40, dx:1, dy:1},
+                 {x:80, y:250, r:30, dx:1, dy:1},
+                 {x:180, y:120, r:20, dx:1, dy:1},
+                 {x:180, y:210, r:50, dx:1, dy:1}];
 
     SPEED_x = 1000;
     SPEED_y = 1000;
@@ -45,17 +45,14 @@ function init() {
 
     function update_animation_parameters(elapsed_time_sec) {
         //здесь обновляем значение всех анимируемых параметров
-        for (var i = 0; i < balls.length; i++) {
-            balls[i].x += SPEED_x * elapsed_time_sec;
-        }
 
         for (var i = 0; i < balls.length; i++) {
             if (balls[i].x > rectX + rectWidth - balls[i].r || balls[i].x < rectX + balls[i].r)
                 balls[i].dx = -balls[i].dx;
             if (balls[i].y > rectY + rectHeigth - balls[i].r || balls[i].y < rectY + balls[i].r)
                 balls[i].dy = -balls[i].dy;
-            balls[i].x += balls[i].dx * elapsed_time_sec;
-            balls[i].y += balls[i].dy * elapsed_time_sec;
+            balls[i].x += balls[i].dx * elapsed_time_sec * SPEED_x;
+            balls[i].y += balls[i].dy * elapsed_time_sec * SPEED_y;
         }
 
         for (var i = 0; i < balls.length; i++)
