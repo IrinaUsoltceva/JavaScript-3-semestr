@@ -11,18 +11,17 @@ function init() {
     var rectHeigth = 480;
     var rectX = 40;
     var rectY = 80;
-    var sx = 10;
+    var sx = 11;
 
     ctx.fillRect(rectX, rectY, rectWidth, rectHeigth);
 
     //заведем параметры анимации
     var balls = [{x:100, y:140, r:35, dx:1, dy:1},
                  {x:80, y:400, r:30, dx:1, dy:1},
-                 {x:400, y:300, r:25, dx:1, dy:1},
-                 {x:400, y:110, r:20, dx:1, dy:1}];
+                 {x:400, y:300, r:25, dx:1, dy:1}];
 
-    SPEED_x = 5000;
-    SPEED_y = 5000;
+    SPEED_x = 2000;
+    SPEED_y = 2000;
 
     function get_time() {
         return new Date().getTime();
@@ -41,7 +40,7 @@ function init() {
 
 
         for (var i = 0; i < balls.length; i++) {
-            ctx.drawImage(ball, sx, 10, 40, 40, balls[i].x, balls[i].y, balls[i].r, balls[i].r);
+            ctx.drawImage(ball, sx, 11, 28, 28, balls[i].x, balls[i].y, balls[i].r * 1.4, balls[i].r * 1.4);
         }
     }
 

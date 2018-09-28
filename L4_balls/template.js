@@ -5,6 +5,11 @@ function init() {
     var ctx = canvas.getContext('2d');
     var ball = document.getElementById("ball");
 
+    var rectWidth = 560;
+    var rectHeigth = 480;
+    var rectX = 40;
+    var rectY = 80;
+
     ctx.drawImage(ball, 10, 10, 40, 40, 290, 290, 60, 60);
     ctx.drawImage(ball, 55, 10, 40, 40, 290, 290, 60, 60);
     ctx.drawImage(ball, 100, 10, 40, 40, 290, 290, 60, 60);
@@ -12,7 +17,7 @@ function init() {
     //drawImage(aImg,  sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 
     //заведем параметры анимации
-    var sx = 10;
+    var sx = 11;
 
     function get_time() {
         return new Date().getTime();
@@ -22,9 +27,11 @@ function init() {
 
 
     function draw() {
+        ctx.fillStyle = "black";
+        ctx.fillRect(rectX, rectY, rectWidth, rectHeigth);
         //здесь перерисовывается содержимое экрана
         //используем значение параметров анимации
-        ctx.drawImage(ball, sx, 10, 40, 40, 290, 290, 60, 60);
+        ctx.drawImage(ball, sx, 11, 28, 28, 290, 290, 60, 60);
     }
 
     function update_animation_parameters(elapsed_time_sec) {

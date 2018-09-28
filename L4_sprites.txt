@@ -76,8 +76,24 @@ https://developer.mozilla.org/ru/docs/Web/API/Canvas_API/Tutorial/
         Чтобы посчитать номер кадра, нужно знать сколько прошло времени с
         момента запуска анимации. Здесь elapsed_time_sec не поможет, лучше так:
 
-                    function update_animation_parameters(elapsed_time_sec) {
-                    x += SPEED_x * elapsed_time_sec;
-                    frame_inde
+                function update_animation_parameters(elapsed_time_sec) {
+                	x += SPEED_x * elapsed_time_sec;
+                	frame_index = Math.floor((get_time() - animation_start_time) * FPS) % num_frames
+                    }
+
+        Совет, поменяйте animation_step, чтобы он передавал текущее время в update_animation_parameters
+
+
+                function animation_step() {
+                    requestAnimationFrame(animation_step);
+
+                    var current_time = get_time();
+                    var elapsed_time = current_time - last_redraw_time;
+                    last_redraw_time = current_time;
+
+                    update_animation_parameters(elapsed_time / 1000, current_time);
+                    draw();
                 }
+
+
 
