@@ -37,6 +37,7 @@ function init() {
         ctx.fillStyle = "cyan";
         ctx.fillRect(rectX, rectY, rectWidth, rectHeigth);
 
+        ctx.drawImage(ball, sx, 10, 40, 40, 290, 290, 60, 60);
         for (var i = 0; i < balls.length; i++) {
             ctx.beginPath();
             ctx.arc(balls[i].x, balls[i].y, balls[i].r, 0, 180);
