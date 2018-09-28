@@ -34,14 +34,14 @@ function init() {
         //здесь перерисовывается содержимое экрана
         //используем значение параметров анимации
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "cyan";
+        ctx.fillStyle = "black";
         ctx.fillRect(rectX, rectY, rectWidth, rectHeigth);
+        ctx.fillStyle = "white";
+        ctx.fillRect(rectX + 1, rectY + 1, rectWidth - 2, rectHeigth - 2);
 
-        ctx.drawImage(ball, sx, 10, 40, 40, 290, 290, 60, 60);
+
         for (var i = 0; i < balls.length; i++) {
-            ctx.beginPath();
-            ctx.arc(balls[i].x, balls[i].y, balls[i].r, 0, 180);
-            ctx.stroke();
+            ctx.drawImage(ball, sx, 10, 40, 40, balls[i].x, balls[i].y, balls[i].r, balls[i].r);
         }
     }
 
@@ -68,6 +68,11 @@ function init() {
                     balls[j].dx = -balls[j].dx;
                     balls[j].dy = -balls[j].dy;
                 }
+
+        if (sx > 400)
+            sx = sx - 400;
+        else
+            sx += 50;
     }
 
     function animation_step() {
