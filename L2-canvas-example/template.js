@@ -15,13 +15,13 @@ function init() {
     ctx.fillRect(rectX, rectY, rectWidth, rectHeigth);
 
     //заведем параметры анимации
-    var balls = [{x:80, y:120, r:40, dx:1, dy:1},
+    var balls = [{x:100, y:140, r:35, dx:1, dy:1},
                  {x:80, y:250, r:30, dx:1, dy:1},
-                 {x:180, y:120, r:20, dx:1, dy:1},
-                 {x:180, y:210, r:50, dx:1, dy:1}];
+                 {x:180, y:120, r:25, dx:1, dy:1},
+                 {x:180, y:210, r:20, dx:1, dy:1}];
 
-    SPEED_x = 1000;
-    SPEED_y = 1000;
+    SPEED_x = 5000;
+    SPEED_y = 5000;
 
     function get_time() {
         return new Date().getTime();
