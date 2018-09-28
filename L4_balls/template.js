@@ -10,7 +10,7 @@ function init() {
     var rectX = 40;
     var rectY = 80;
 
-    //drawImage(aImg,  sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+    //drawImage(aImg, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 
     //заведем параметры анимации
     var sx = 11;
