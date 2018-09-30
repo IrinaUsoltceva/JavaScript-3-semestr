@@ -20,22 +20,33 @@ function init() {
     SPEED_y = 100; // скорость пикселей в секунду
 
 //задание параметров для картинки
-    var sx = 11; //где по х находится мяч на картинке с мячами
-    var sy = 11; //где по у на картинке находится мяч
+    var sx = 11; //где по х находится мяч на картинке с мячами - меняется
+    var sy = 11; //где по у на картинке находится мяч - стабильно
     var sWidth = 28; //ширина и высота мяча на картинке с мячами
     var sHeight = 28;
+
+    var dFrame = 50; //расстояние между мячами на картинке (от левого угла до левого угла)
+    var numFrame = 10; //сколько всего кадров
+    var frame_index = 0;
+    FPS = 9;
 
 //дает время от начала эпохи
     function get_time() {
         return new Date().getTime();
     }
 
-    var last_redraw_time = get_time();
+    var animation_start_time = get_time();
+    var last_redraw_time = animation_start_time;
+
+//рисуем все в первый раз
+    for (var i = 0; i < balls.length; i++)
+        ctx.drawImage(ball, sx, sy, sWidth, sHeight,
+           balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
+           balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
 
 //перерисовать содержимое экрана
     function draw() {
          ctx.clearRect(0, 0, canvas.width, canvas.height);
-         ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
 
          //была арка  в виде круга, теперь вместо нее картинка
          /*for (var i = 0; i < balls.length; i++) {
@@ -47,10 +58,12 @@ function init() {
             ctx.drawImage(ball, sx, sy, sWidth, sHeight,
                            balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
                            balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
+
+        ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
     }
 
 //обновить значение всех анимируемых параметров
-    function update_animation_parameters(elapsed_time) {
+    function update_animation_parameters(elapsed_time, current_time) {
     //для каждого мяча
         for (var i = 0; i < balls.length; i++) {
             //проверяет, не коснулся ли стенок по х или у
@@ -83,10 +96,10 @@ function init() {
                 }
 
         //изменяет кадр
-        if (sx > 400) //на 400 последний кадр, надо вернуться назад
-                    sx = sx - 400;
-                else //впереди еще есть кадры, переход на следующий
-                    sx += 50;
+        //frame_index = (frame_index + 1) % numFrame;
+        frame_index = (Math.floor(current_time - animation_start_time) * FPS) % numFrame;
+        //изменяет картинку в соответствии с кадром
+        sx = 11 + (frame_index) * dFrame;
 
     }
 
@@ -103,7 +116,7 @@ function init() {
         if (elapsed_time > 100) //если нас не было на странице больше 100 милисек,
             elapsed_time = 100; //то будет считать, что нас не было ровно 100 милисек
 
-        update_animation_parameters(elapsed_time / 1000); //отправляем прошедшее время в милисек
+        update_animation_parameters(elapsed_time / 1000, current_time); //отправляем прошедшее время в милисек
         draw();
     }
 

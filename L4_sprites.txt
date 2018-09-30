@@ -79,6 +79,7 @@ https://developer.mozilla.org/ru/docs/Web/API/Canvas_API/Tutorial/
                 function update_animation_parameters(elapsed_time_sec) {
                 	x += SPEED_x * elapsed_time_sec;
                 	frame_index = Math.floor((get_time() - animation_start_time) * FPS) % num_frames
+                	//наиб. целое число
                     }
 
         Совет, поменяйте animation_step, чтобы он передавал текущее время в update_animation_parameters
