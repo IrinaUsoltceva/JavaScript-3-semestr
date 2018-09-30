@@ -12,33 +12,81 @@ function init() {
 
 
 //завод параметров анимации
-    var balls = [{x:100, y:140, r:35, dx:1, dy:1},
-                 {x:80, y:400, r:30, dx:1, dy:1},
+    var balls = [{x:100, y:140, r:35, dx:1, dy:1}, //dx dy отвечает за направление
+                 {x:80, y:400, r:30, dx:1, dy:1},  //полета, могут быть +-1
                  {x:400, y:300, r:25, dx:1, dy:1}]
 
+    SPEED_x = 100; // скороксть пикселей в секунду
+    SPEED_y = 100; // скорость пикселей в секунду
+
+//задание параметров для картинки
+    var sx = 11; //где по х находится мяч на картинке с мячами
+    var sy = 11; //где по у на картинке находится мяч
+    var sWidth = 28; //ширина и высота мяча на картинке с мячами
+    var sHeight = 28;
+
+//дает время от начала эпохи
+    function get_time() {
+        return new Date().getTime();
+    }
+
+    var last_redraw_time = get_time();
 
 //перерисовать содержимое экрана
     function draw() {
          ctx.clearRect(0, 0, canvas.width, canvas.height);
          ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
 
-         for (var i = 0; i < balls.length; i++) {
+         //была арка  в виде круга, теперь вместо нее картинка
+         /*for (var i = 0; i < balls.length; i++) {
              ctx.beginPath();
              ctx.arc(balls[i].x, balls[i].y, balls[i].r, 0, 180);
              ctx.stroke();
-         }
+         }*/
+         for (var i = 0; i < balls.length; i++)
+            ctx.drawImage(ball, sx, sy, sWidth, sHeight,
+                           balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
+                           balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
     }
 
 //обновить значение всех анимируемых параметров
-    function update_animation_parameters() {
+    function update_animation_parameters(elapsed_time) {
+    //для каждого мяча
         for (var i = 0; i < balls.length; i++) {
+            //проверяет, не коснулся ли стенок по х или у
             if (balls[i].x > rectX + rectWidth - balls[i].r || balls[i].x < rectX + balls[i].r)
                 balls[i].dx = -balls[i].dx;
             if (balls[i].y > rectY + rectHeight - balls[i].r || balls[i].y < rectY + balls[i].r)
                 balls[i].dy = -balls[i].dy;
-            balls[i].x += balls[i].dx * 3;
-            balls[i].y += balls[i].dy * 3;
+
+            //изменяет местоположение
+            balls[i].x += balls[i].dx * elapsed_time * SPEED_x;
+            //точка х += направление по х * прошедшее время в сек * скорость px/сек
+            balls[i].y += balls[i].dy * elapsed_time * SPEED_y;
         }
+
+        //для каждого мяча
+        for (var i = 0; i < balls.length; i++)
+            //проверяет среди оставшихся непроверенных мячей
+            for (var j = i + 1; j < balls.length; j++)
+                //если (r1 + r2)^2 > ((x1 - x2)^2 + (y1-y2)^2)
+                //иными словами, если сумма радиусов больше, чем расстояние между центрами
+                //значит, мячи столкнулись, и их надо направить в разные стороны
+                if ((balls[i].r + balls[j].r) * (balls[i].r + balls[j].r) >
+                    (balls[i].x - balls[j].x) * (balls[i].x - balls[j].x) +
+                    (balls[i].y - balls[j].y) * (balls[i].y - balls[j].y)) {
+
+                    balls[i].dx = -balls[i].dx;
+                    balls[i].dy = -balls[i].dy;
+                    balls[j].dx = -balls[j].dx;
+                    balls[j].dy = -balls[j].dy;
+                }
+
+        //изменяет кадр
+        if (sx > 400) //на 400 последний кадр, надо вернуться назад
+                    sx = sx - 400;
+                else //впереди еще есть кадры, переход на следующий
+                    sx += 50;
 
     }
 
@@ -48,7 +96,14 @@ function init() {
 
         requestAnimationFrame(animation_step);
 
-        update_animation_parameters();
+        var current_time = get_time();
+        var elapsed_time = current_time - last_redraw_time; //высчитывает, сколько прошло милисек
+        last_redraw_time = current_time;
+
+        if (elapsed_time > 100) //если нас не было на странице больше 100 милисек,
+            elapsed_time = 100; //то будет считать, что нас не было ровно 100 милисек
+
+        update_animation_parameters(elapsed_time / 1000); //отправляем прошедшее время в милисек
         draw();
     }
 

@@ -41,6 +41,7 @@ function init() {
 
         for (var i = 0; i < balls.length; i++) {
             ctx.drawImage(ball, sx, 11, 28, 28, balls[i].x, balls[i].y, balls[i].r, balls[i].r);
+            //drawImage(aImg, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
         }
     }
 
