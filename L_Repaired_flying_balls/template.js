@@ -12,6 +12,10 @@ function init() {
 
 
 //завод параметров анимации
+    /*var balls = [{x:100, y:140, r:35, dx:1, dy:1}, //dx dy отвечает за направление
+                 {x:80, y:400, r:30, dx:1, dy:1},  //полета, могут быть +-1
+                 {x:400, y:300, r:25, dx:1, dy:1}]*/
+
     var balls = [{x:100, y:140, r:35, dx:1, dy:1}, //dx dy отвечает за направление
                  {x:80, y:400, r:30, dx:1, dy:1},  //полета, могут быть +-1
                  {x:400, y:300, r:25, dx:1, dy:1}]
@@ -28,7 +32,7 @@ function init() {
     var dFrame = 50; //расстояние между мячами на картинке (от левого угла до левого угла)
     var numFrame = 10; //сколько всего кадров
     var frame_index = 0;
-    FPS = 9;
+    FPS = 20;
 
 //дает время от начала эпохи
     function get_time() {
@@ -96,8 +100,11 @@ function init() {
                 }
 
         //изменяет кадр
-        //frame_index = (frame_index + 1) % numFrame;
-        frame_index = (Math.floor(current_time - animation_start_time) * FPS) % numFrame;
+        //frame_index = (frame_index + 1) % numFrame; //работает
+        //не работает
+        frame_index = Math.floor((current_time - animation_start_time) / 1000 * FPS) % numFrame;
+
+
         //изменяет картинку в соответствии с кадром
         sx = 11 + (frame_index) * dFrame;
 
