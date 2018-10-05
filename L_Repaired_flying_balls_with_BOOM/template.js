@@ -3,6 +3,10 @@ function init() {
     var canvas = document.getElementById("game");
     var ctx = canvas.getContext('2d');
 
+    canvas.onclick = function (event) {
+        clickBall(event.offsetX, event.offsetY);
+    };
+
 //создание поля
     var rectWidth = 560;
     var rectHeight = 480;
@@ -20,8 +24,8 @@ function init() {
                  {x:80, y:400, r:30, dx:1, dy:1},
                  {x:400, y:300, r:25, angle:180, dx:Math.cos(this.angle), dy:Math.sin(this.angle)}]*/
 
-    SPEED_x = 100; // скороксть пикселей в секунду
-    SPEED_y = 100; // скорость пикселей в секунду
+    SPEED_x = 50; // скороксть пикселей в секунду
+    SPEED_y = 50; // скорость пикселей в секунду
 
 //задание параметров для картинки
     var sx = 11; //где по х находится мяч на картинке с мячами - меняется
@@ -32,7 +36,7 @@ function init() {
     var dFrame = 50; //расстояние между мячами на картинке (от левого угла до левого угла)
     var numFrame = 10; //сколько всего кадров
     var frame_index = 0;
-    var FPS = 40;
+    var FPS = 6;
 
 //дает время от начала эпохи
     function get_time() {
@@ -66,15 +70,62 @@ function init() {
         ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
     }
 
+//клик
+    function clickBall(offsetX, offsetY) {
+        console.log('clicked');
+
+        var ballCreated = false;
+        for (var i = 0; i < balls.length; i++)
+            if (balls[i].x - balls[i].r - 20 < offsetX && offsetX < balls[i].x + balls[i].r + 20 &&
+                balls[i].y - balls[i].r - 20 < offsetY && offsetY < balls[i].y + balls[i].r + 20) {
+                balls.splice(i, 1);
+                ballCreated = true;
+                console.log('удалился мяч:' + balls.length);
+            }
+
+        if (!ballCreated) {
+            balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1});
+            console.log('создался мяч:' + balls.length);
+        }
+
+
+
+    }
+
 //обновить значение всех анимируемых параметров
     function update_animation_parameters(elapsed_time, current_time) {
     //для каждого мяча
         for (var i = 0; i < balls.length; i++) {
+
             //проверяет, не коснулся ли стенок по х или у
-            if (balls[i].x >= rectX + rectWidth - balls[i].r || balls[i].x <= rectX + balls[i].r)
+            /*if (balls[i].x >= rectX + rectWidth - balls[i].r || balls[i].x <= rectX + balls[i].r)
+                balls[i].dx = -balls[i].dx;*/
+            /*if (balls[i].y >= rectY + rectHeight - balls[i].r || balls[i].y <= rectY + balls[i].r)
+                balls[i].dy = -balls[i].dy;*/
+
+            if (balls[i].x >= rectX + rectWidth - balls[i].r) {
+                var delta = balls[i].x - (rectX + rectWidth - balls[i].r);
+                balls[i].x -= 2 * delta;
                 balls[i].dx = -balls[i].dx;
-            if (balls[i].y >= rectY + rectHeight - balls[i].r || balls[i].y <= rectY + balls[i].r)
+            }
+
+            if (balls[i].x <= rectX + balls[i].r) {
+                var delta = (rectX + balls[i].r) - balls[i].x;
+                balls[i].x += 2 * delta;
+                balls[i].dx = -balls[i].dx;
+            }
+
+            if (balls[i].y >= rectY + rectHeight - balls[i].r) {
+                var delta = balls[i].y - (rectY + rectHeight - balls[i].r);
+                balls[i].y -= 2 * delta;
                 balls[i].dy = -balls[i].dy;
+            }
+
+            if (balls[i].y <= rectY + balls[i].r) {
+                var delta = (rectY + balls[i].r) - balls[i].y;
+                balls[i].y += 2 * delta;
+                balls[i].dy = -balls[i].dy;
+            }
 
             //проверяет среди оставшихся непроверенных мячей
             for (var j = i + 1; j < balls.length; j++)
@@ -99,10 +150,8 @@ function init() {
 
 
     //изменяет кадр
-        //frame_index = (frame_index + 1) % numFrame; //работает
-        //не работает
+        //frame_index = (frame_index + 1) % numFrame;
         frame_index = Math.floor((current_time - animation_start_time) / 1000 * FPS) % numFrame;
-
 
         //изменяет картинку в соответствии с кадром
         sx = 11 + (frame_index) * dFrame;
