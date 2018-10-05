@@ -32,7 +32,7 @@ function init() {
     var dFrame = 50; //расстояние между мячами на картинке (от левого угла до левого угла)
     var numFrame = 10; //сколько всего кадров
     var frame_index = 0;
-    FPS = 20;
+    FPS = 30;
 
 //дает время от начала эпохи
     function get_time() {
@@ -75,14 +75,9 @@ function init() {
                 balls[i].dx = -balls[i].dx;
             if (balls[i].y > rectY + rectHeight - balls[i].r || balls[i].y < rectY + balls[i].r)
                 balls[i].dy = -balls[i].dy;
-
-            //изменяет местоположение
-            balls[i].x += balls[i].dx * elapsed_time * SPEED_x;
-            //точка х += направление по х * прошедшее время в сек * скорость px/сек
-            balls[i].y += balls[i].dy * elapsed_time * SPEED_y;
         }
 
-        //для каждого мяча
+    //для каждого мяча
         for (var i = 0; i < balls.length; i++)
             //проверяет среди оставшихся непроверенных мячей
             for (var j = i + 1; j < balls.length; j++)
@@ -99,7 +94,15 @@ function init() {
                     balls[j].dy = -balls[j].dy;
                 }
 
-        //изменяет кадр
+    //для каждого мяча
+        for (var i = 0; i < balls.length; i++) {
+            //изменяет местоположение
+            balls[i].x += balls[i].dx * elapsed_time * SPEED_x;
+            //точка х += направление по х * прошедшее время в сек * скорость px/сек
+            balls[i].y += balls[i].dy * elapsed_time * SPEED_y;
+        }
+
+    //изменяет кадр
         //frame_index = (frame_index + 1) % numFrame; //работает
         //не работает
         frame_index = Math.floor((current_time - animation_start_time) / 1000 * FPS) % numFrame;
