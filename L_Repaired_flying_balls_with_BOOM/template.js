@@ -23,9 +23,8 @@ function init() {
     /*var balls = [{x:100, y:140, r:35, dx:1, dy:1},
                  {x:80, y:400, r:30, dx:1, dy:1},
                  {x:400, y:300, r:25, angle:180, dx:Math.cos(this.angle), dy:Math.sin(this.angle)}]*/
-
-    SPEED_x = 50; // скороксть пикселей в секунду
-    SPEED_y = 50; // скорость пикселей в секунду
+    var SPEED_x = 50; // скороксть пикселей в секунду
+    var SPEED_y = 50; // скорость пикселей в секунду
 
 //задание параметров для картинки
     var sx = 11; //где по х находится мяч на картинке с мячами - меняется
@@ -47,10 +46,10 @@ function init() {
     var last_redraw_time = animation_start_time;
 
 //рисуем все в первый раз
-    for (var i = 0; i < balls.length; i++)
+   /* for (var i = 0; i < balls.length; i++)
         ctx.drawImage(ball, sx, sy, sWidth, sHeight,
            balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
-           balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
+           balls[i].r * 2, balls[i].r * 2);*/                  //dWidth ширина, dHeight высота, 2r
 
 //перерисовать содержимое экрана
     function draw() {
@@ -87,9 +86,6 @@ function init() {
             balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1});
             console.log('создался мяч:' + balls.length);
         }
-
-
-
     }
 
 //обновить значение всех анимируемых параметров
@@ -168,8 +164,8 @@ function init() {
         var elapsed_time = current_time - last_redraw_time; //высчитывает, сколько прошло милисек
         last_redraw_time = current_time;
 
-        if (elapsed_time > 100) //если нас не было на странице больше 100 милисек,
-            elapsed_time = 100; //то будет считать, что нас не было ровно 100 милисек
+        if (elapsed_time > 1000) //если нас не было на странице больше 100 милисек,
+            elapsed_time = 0; //то будет считать, что нас не было ровно 100 милисек
 
         update_animation_parameters(elapsed_time / 1000, current_time); //отправляем прошедшее время в милисек
         draw();
