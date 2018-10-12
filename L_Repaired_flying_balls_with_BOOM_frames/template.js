@@ -14,19 +14,19 @@ function init() {
     var rectY = 80;
     ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
 
+    var animation_rotate = {sx: 11, sy: 11, sWidth: 20};
+    var animation_explode = {sx: 20};
 
 //завод параметров анимации
-    var balls = [{x:100, y:140, r:35, dx:1, dy:1, frame_index:0}, //dx dy отвечает за направление
+    var balls = [{x:100, y:140, r:35, dx:1, dy:1, frame_index:0, anim: animation_rotate}, //dx dy отвечает за направление
                  {x:80, y:400, r:30, dx:1, dy:1, frame_index:0},  //полета, могут быть +-1
                  {x:400, y:300, r:25, dx:1, dy:1, frame_index:0}];
 
-    /*var balls = [{x:100, y:140, r:35, dx:1, dy:1},
-                 {x:80, y:400, r:30, dx:1, dy:1},
-                 {x:400, y:300, r:25, angle:180, dx:Math.cos(this.angle), dy:Math.sin(this.angle)}]*/
+
     var SPEED_x = 50; // скороксть пикселей в секунду
     var SPEED_y = 50; // скорость пикселей в секунду
 
-//задание параметров для картинки
+    //задание параметров для картинки
     var sx = 11; //где по х находится мяч на картинке с мячами - меняется
     var sy = 11; //где по у на картинке находится мяч - стабильно
     var sWidth = 28; //ширина и высота мяча на картинке с мячами
@@ -34,7 +34,6 @@ function init() {
 
     var dFrame = 50; //расстояние между мячами на картинке (от левого угла до левого угла)
     var numFrame = 10; //сколько всего кадров
-    //var frame_index = 0;
     var FPS = 6;
 
 //дает время от начала эпохи
@@ -45,11 +44,6 @@ function init() {
     var animation_start_time = get_time();
     var last_redraw_time = animation_start_time;
 
-//рисуем все в первый раз
-   /* for (var i = 0; i < balls.length; i++)
-        ctx.drawImage(ball, sx, sy, sWidth, sHeight,
-           balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
-           balls[i].r * 2, balls[i].r * 2);*/                  //dWidth ширина, dHeight высота, 2r
 
 //перерисовать содержимое экрана
     function draw() {
@@ -73,19 +67,25 @@ function init() {
     function clickBall(offsetX, offsetY) {
         console.log('clicked');
 
-        var ballCreated = false;
+        var ballDeleted = false;
         for (var i = 0; i < balls.length; i++)
             if (balls[i].x - balls[i].r - 20 < offsetX && offsetX < balls[i].x + balls[i].r + 20 &&
                 balls[i].y - balls[i].r - 20 < offsetY && offsetY < balls[i].y + balls[i].r + 20) {
+                boom(balls[i].x, balls[i].y);
                 balls.splice(i, 1);
-                ballCreated = true;
+                ballDeleted = true;
                 console.log('удалился мяч:' + balls.length);
             }
 
-        if (!ballCreated) {
+        if (!ballDeleted) {
             balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1, frame_index:0});
             console.log('создался мяч:' + balls.length);
         }
+    }
+
+    function boom(x, y){
+
+
     }
 
 //обновить значение всех анимируемых параметров
