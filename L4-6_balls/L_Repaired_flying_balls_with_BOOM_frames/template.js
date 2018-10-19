@@ -7,6 +7,8 @@ function init() {
         clickBall(event.offsetX, event.offsetY);
     };
 
+    var ball = document.getElementById('ball');
+
 //создание поля
     var rectWidth = 560;
     var rectHeight = 480;
@@ -14,51 +16,48 @@ function init() {
     var rectY = 80;
     ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
 
-    var animation_rotate = {sx: 11, sy: 11, sWidth: 20};
+//завод параметров анимации
+    //sx - где по х находится мяч на картинке с мячами
+    //sy - где по у на картинке находится мяч
+    //sWidth - ширина и высота мяча на картинке с мячами
+    //sHeight
+    //dFrame - расстояние между мячами на картинке (от левого угла до левого угла)
+    //numFrame - сколько всего кадров
+    //FPS
+
+    var animation_rotate = {frame_index:0, sx:11, sy:11, sWidth:28, sHeight:28,
+                            dFrame:50, numFrame:10, FPS:6,
+                            animation_start_time: get_time(), last_redraw_time:this.animation_start_time,
+                            elapsed_time:0, current_time:this.animation_start_time};
     var animation_explode = {sx: 20};
 
-//завод параметров анимации
-    var balls = [{x:100, y:140, r:35, dx:1, dy:1, frame_index:0, anim: animation_rotate}, //dx dy отвечает за направление
-                 {x:80, y:400, r:30, dx:1, dy:1, frame_index:0},  //полета, могут быть +-1
-                 {x:400, y:300, r:25, dx:1, dy:1, frame_index:0}];
+    var balls = [{x:100, y:140, r:35, dx:1, dy:1, anim:animation_rotate}, //dx dy отвечает за направление
+                 {x:80, y:400, r:30, dx:1, dy:1, anim:animation_rotate},  //полета, могут быть +-1
+                 {x:400, y:300, r:25, dx:1, dy:1, anim:animation_rotate}];
 
 
     var SPEED_x = 50; // скороксть пикселей в секунду
     var SPEED_y = 50; // скорость пикселей в секунду
 
-    //задание параметров для картинки
-    var sx = 11; //где по х находится мяч на картинке с мячами - меняется
-    var sy = 11; //где по у на картинке находится мяч - стабильно
-    var sWidth = 28; //ширина и высота мяча на картинке с мячами
-    var sHeight = 28;
-
-    var dFrame = 50; //расстояние между мячами на картинке (от левого угла до левого угла)
-    var numFrame = 10; //сколько всего кадров
-    var FPS = 6;
 
 //дает время от начала эпохи
     function get_time() {
         return new Date().getTime();
     }
 
-    var animation_start_time = get_time();
-    var last_redraw_time = animation_start_time;
+    //var animation_start_time = get_time();
+    //var last_redraw_time = animation_start_time;//elapsed_time = current_time - last_redraw_time, animation_start_time
 
 
 //перерисовать содержимое экрана
     function draw() {
          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-         //была арка  в виде круга, теперь вместо нее картинка
-         /*for (var i = 0; i < balls.length; i++) {
-             ctx.beginPath();
-             ctx.arc(balls[i].x, balls[i].y, balls[i].r, 0, 180);
-             ctx.stroke();
-         }*/
-         for (var i = 0; i < balls.length; i++)
-            ctx.drawImage(ball, sx, sy, sWidth, sHeight,
-                           balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
-                           balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
+         for (var i = 0; i < balls.length; i++) {
+             ctx.drawImage(ball, balls[i].anim.sx, balls[i].anim.sy, balls[i].anim.sWidth, balls[i].anim.sHeight,
+                 balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
+                 balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
+         }
 
         ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
     }
@@ -71,54 +70,50 @@ function init() {
         for (var i = 0; i < balls.length; i++)
             if (balls[i].x - balls[i].r - 20 < offsetX && offsetX < balls[i].x + balls[i].r + 20 &&
                 balls[i].y - balls[i].r - 20 < offsetY && offsetY < balls[i].y + balls[i].r + 20) {
-                boom(balls[i].x, balls[i].y);
                 balls.splice(i, 1);
                 ballDeleted = true;
                 console.log('удалился мяч:' + balls.length);
             }
 
         if (!ballDeleted) {
-            balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1, frame_index:0});
+            balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1, anim:animation_rotate});
             console.log('создался мяч:' + balls.length);
         }
     }
 
-    function boom(x, y){
-
-
-    }
 
 //обновить значение всех анимируемых параметров
-    function update_animation_parameters(elapsed_time, current_time) {
+    function update_animation_parameters() {
     //для каждого мяча
-        for (var i = 0; i < balls.length; i++) {
+        for (i = 0; i < balls.length; i++) {
 
             //проверяет, не коснулся ли стенок по х или у
             /*if (balls[i].x >= rectX + rectWidth - balls[i].r || balls[i].x <= rectX + balls[i].r)
                 balls[i].dx = -balls[i].dx;*/
             /*if (balls[i].y >= rectY + rectHeight - balls[i].r || balls[i].y <= rectY + balls[i].r)
                 balls[i].dy = -balls[i].dy;*/
+            var delta;
 
             if (balls[i].x >= rectX + rectWidth - balls[i].r) {
-                var delta = balls[i].x - (rectX + rectWidth - balls[i].r);
+                delta = balls[i].x - (rectX + rectWidth - balls[i].r);
                 balls[i].x -= 2 * delta;
                 balls[i].dx = -balls[i].dx;
             }
 
             if (balls[i].x <= rectX + balls[i].r) {
-                var delta = (rectX + balls[i].r) - balls[i].x;
+                delta = (rectX + balls[i].r) - balls[i].x;
                 balls[i].x += 2 * delta;
                 balls[i].dx = -balls[i].dx;
             }
 
             if (balls[i].y >= rectY + rectHeight - balls[i].r) {
-                var delta = balls[i].y - (rectY + rectHeight - balls[i].r);
+                delta = balls[i].y - (rectY + rectHeight - balls[i].r);
                 balls[i].y -= 2 * delta;
                 balls[i].dy = -balls[i].dy;
             }
 
             if (balls[i].y <= rectY + balls[i].r) {
-                var delta = (rectY + balls[i].r) - balls[i].y;
+                delta = (rectY + balls[i].r) - balls[i].y;
                 balls[i].y += 2 * delta;
                 balls[i].dy = -balls[i].dy;
             }
@@ -139,19 +134,20 @@ function init() {
                 }
 
             //изменяет местоположение
-            balls[i].x += balls[i].dx * elapsed_time * SPEED_x;
+            balls[i].x += balls[i].dx * balls[i].anim.elapsed_time * SPEED_x;
             //точка х += направление по х * прошедшее время в сек * скорость px/сек
-            balls[i].y += balls[i].dy * elapsed_time * SPEED_y;
+            balls[i].y += balls[i].dy * balls[i].anim.elapsed_time * SPEED_y;
         }
 
 
     //изменяет кадр
         //frame_index = (frame_index + 1) % numFrame;
         for (var i = 0; i < balls.length; i++) {
-            balls[i].frame_index = Math.floor((current_time - animation_start_time) / 1000 * FPS) % numFrame;
-
+            balls[i].anim.frame_index = Math.floor((balls[i].anim.current_time - balls[i].anim.animation_start_time)
+                                        / 1000 * balls[i].anim.FPS) % balls[i].anim.numFrame;
+            //здесь проверить анимацию, и, если взрыв и кадр слишком большой - убиваем шарик
             //изменяет картинку в соответствии с кадром
-            sx = 11 + (balls[i].frame_index) * dFrame;
+            balls[i].anim.sx = 11 + (balls[i].anim.frame_index) * balls[i].anim.dFrame;
         }
 
     }
@@ -161,15 +157,15 @@ function init() {
     function animation_step() {
 
         requestAnimationFrame(animation_step);
+        for (var i = 0; i < balls.length; i++) {
+            balls[i].anim.current_time = get_time();
+            balls[i].anim.elapsed_time = balls[i].anim.current_time - balls[i].anim.last_redraw_time; //высчитывает, сколько прошло милисек
+            balls[i].anim.last_redraw_time = balls[i].anim.current_time;
 
-        var current_time = get_time();
-        var elapsed_time = current_time - last_redraw_time; //высчитывает, сколько прошло милисек
-        last_redraw_time = current_time;
-
-        if (elapsed_time > 1000) //если нас не было на странице больше 100 милисек,
-            elapsed_time = 0; //то будет считать, что нас не было ровно 100 милисек
-
-        update_animation_parameters(elapsed_time / 1000, current_time); //отправляем прошедшее время в милисек
+            if (balls[i].anim.elapsed_time > 1000) //если нас не было на странице больше 100 милисек,
+                balls[i].anim.elapsed_time = 0; //то будет считать, что нас не было ровно 100 милисек
+        }
+        update_animation_parameters(); //отправляем прошедшее время в милисек
         draw();
     }
 
