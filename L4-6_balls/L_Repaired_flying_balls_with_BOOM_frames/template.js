@@ -142,9 +142,9 @@ function init() {
                 }
 
             //изменяет местоположение
-            balls[i].x += balls[i].dx * balls[i].elapsed_time * SPEED_x ;
+            balls[i].x += balls[i].dx * balls[i].elapsed_time * SPEED_x + 1;
             //точка х += направление по х * прошедшее время в сек * скорость px/сек
-            balls[i].y += balls[i].dy * balls[i].elapsed_time * SPEED_y;
+            balls[i].y += balls[i].dy * balls[i].elapsed_time * SPEED_y + 1;
         }
 
 
