@@ -19,8 +19,8 @@ function init() {
 
 //завод параметров анимации
     var balls = [{x:100, y:140, r:35, dx:1, dy:1, frame_index:0, anim: animation_rotate}, //dx dy отвечает за направление
-                 {x:80, y:400, r:30, dx:1, dy:1, frame_index:0},  //полета, могут быть +-1
-                 {x:400, y:300, r:25, dx:1, dy:1, frame_index:0}];
+        {x:80, y:400, r:30, dx:1, dy:1, frame_index:0},  //полета, могут быть +-1
+        {x:400, y:300, r:25, dx:1, dy:1, frame_index:0}];
 
 
     var SPEED_x = 50; // скороксть пикселей в секунду
@@ -47,18 +47,18 @@ function init() {
 
 //перерисовать содержимое экрана
     function draw() {
-         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-         //была арка  в виде круга, теперь вместо нее картинка
-         /*for (var i = 0; i < balls.length; i++) {
-             ctx.beginPath();
-             ctx.arc(balls[i].x, balls[i].y, balls[i].r, 0, 180);
-             ctx.stroke();
-         }*/
-         for (var i = 0; i < balls.length; i++)
+        //была арка  в виде круга, теперь вместо нее картинка
+        /*for (var i = 0; i < balls.length; i++) {
+            ctx.beginPath();
+            ctx.arc(balls[i].x, balls[i].y, balls[i].r, 0, 180);
+            ctx.stroke();
+        }*/
+        for (var i = 0; i < balls.length; i++)
             ctx.drawImage(ball, sx, sy, sWidth, sHeight,
-                           balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
-                           balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
+                balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
+                balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
 
         ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
     }
@@ -90,7 +90,7 @@ function init() {
 
 //обновить значение всех анимируемых параметров
     function update_animation_parameters(elapsed_time, current_time) {
-    //для каждого мяча
+        //для каждого мяча
         for (var i = 0; i < balls.length; i++) {
 
             //проверяет, не коснулся ли стенок по х или у
@@ -145,7 +145,7 @@ function init() {
         }
 
 
-    //изменяет кадр
+        //изменяет кадр
         //frame_index = (frame_index + 1) % numFrame;
         for (var i = 0; i < balls.length; i++) {
             balls[i].frame_index = Math.floor((current_time - animation_start_time) / 1000 * FPS) % numFrame;
