@@ -25,15 +25,21 @@ function init() {
     //numFrame - сколько всего кадров
     //FPS
 
-    var animation_rotate = {frame_index:0, sx:11, sy:11, sWidth:28, sHeight:28,
-                            dFrame:50, numFrame:10, FPS:6,
-                            animation_start_time: get_time(), last_redraw_time:this.animation_start_time,
-                            elapsed_time:0, current_time:this.animation_start_time};
-    var animation_explode = {sx: 20};
+    var startOfAllAnimation = get_time();
+    var current_time = startOfAllAnimation;
 
-    var balls = [{x:100, y:140, r:35, dx:1, dy:1, anim:animation_rotate}, //dx dy отвечает за направление
-                 {x:80, y:400, r:30, dx:1, dy:1, anim:animation_rotate},  //полета, могут быть +-1
-                 {x:400, y:300, r:25, dx:1, dy:1, anim:animation_rotate}];
+    var animation_rotate = {frame_index:0, sx:11, sy:11, sWidth:28, sHeight:28,
+                            dFrame:50, numFrame:10, FPS:6};
+    //var animation_explode = {sx: 20};
+
+    var balls = [{x:100, y:140, r:35, dx:1, dy:1, anim:animation_rotate,
+                animation_start_time:startOfAllAnimation, last_redraw_time:startOfAllAnimation,
+                elapsed_time:0},
+                 {x:80, y:400, r:30, dx:1, dy:1, anim:animation_rotate,
+                 animation_start_time:startOfAllAnimation, last_redraw_time:startOfAllAnimation,
+                 elapsed_time:0}];
+
+
 
 
     var SPEED_x = 50; // скороксть пикселей в секунду
@@ -47,7 +53,6 @@ function init() {
 
     //var animation_start_time = get_time();
     //var last_redraw_time = animation_start_time;//elapsed_time = current_time - last_redraw_time, animation_start_time
-
 
 //перерисовать содержимое экрана
     function draw() {
@@ -76,7 +81,10 @@ function init() {
             }
 
         if (!ballDeleted) {
-            balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1, anim:animation_rotate});
+            var ball_created_time = get_time();
+            balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1, anim:animation_rotate,
+                        animation_start_time:ball_created_time, last_redraw_time:ball_created_time,
+                        elapsed_time:0});
             console.log('создался мяч:' + balls.length);
         }
     }
@@ -134,16 +142,16 @@ function init() {
                 }
 
             //изменяет местоположение
-            balls[i].x += balls[i].dx * balls[i].anim.elapsed_time * SPEED_x;
+            balls[i].x += balls[i].dx * balls[i].elapsed_time * SPEED_x ;
             //точка х += направление по х * прошедшее время в сек * скорость px/сек
-            balls[i].y += balls[i].dy * balls[i].anim.elapsed_time * SPEED_y;
+            balls[i].y += balls[i].dy * balls[i].elapsed_time * SPEED_y;
         }
 
 
     //изменяет кадр
         //frame_index = (frame_index + 1) % numFrame;
         for (var i = 0; i < balls.length; i++) {
-            balls[i].anim.frame_index = Math.floor((balls[i].anim.current_time - balls[i].anim.animation_start_time)
+            balls[i].anim.frame_index = Math.floor((current_time - balls[i].animation_start_time)
                                         / 1000 * balls[i].anim.FPS) % balls[i].anim.numFrame;
             //здесь проверить анимацию, и, если взрыв и кадр слишком большой - убиваем шарик
             //изменяет картинку в соответствии с кадром
@@ -157,15 +165,22 @@ function init() {
     function animation_step() {
 
         requestAnimationFrame(animation_step);
-        for (var i = 0; i < balls.length; i++) {
-            balls[i].anim.current_time = get_time();
-            balls[i].anim.elapsed_time = balls[i].anim.current_time - balls[i].anim.last_redraw_time; //высчитывает, сколько прошло милисек
-            balls[i].anim.last_redraw_time = balls[i].anim.current_time;
 
-            if (balls[i].anim.elapsed_time > 1000) //если нас не было на странице больше 100 милисек,
-                balls[i].anim.elapsed_time = 0; //то будет считать, что нас не было ровно 100 милисек
+        current_time = get_time();
+        for (var i = 0; i < balls.length; i++) {
+            //console.log("1 current_time = " + current_time);
+            //console.log("1 balls[" + i + "].last_redraw_time = " + balls[i].last_redraw_time);
+            //console.log("1 balls[" + i + "].elapsed_time = " + balls[i].elapsed_time);
+            balls[i].elapsed_time = current_time - balls[i].last_redraw_time; //высчитывает, сколько прошло милисек
+            balls[i].last_redraw_time = current_time;
+            //console.log("2 current_time = " + current_time);
+            //console.log("2 balls[" + i + "].last_redraw_time = " + balls[i].last_redraw_time);
+            //console.log("2 balls[" + i + "].elapsed_time = " + balls[i].elapsed_time);
+
+            if (balls[i].elapsed_time > 1000) //если нас не было на странице больше 100 милисек,
+                balls[i].elapsed_time = 1; //то будет считать, что нас не было ровно 100 милисек
         }
-        update_animation_parameters(); //отправляем прошедшее время в милисек
+        update_animation_parameters();
         draw();
     }
 
