@@ -142,9 +142,9 @@ function init() {
                 }
 
             //изменяет местоположение
-            balls[i].x += balls[i].dx * balls[i].elapsed_time * SPEED_x + 1;
+            balls[i].x += balls[i].dx * balls[i].elapsed_time * SPEED_x;
             //точка х += направление по х * прошедшее время в сек * скорость px/сек
-            balls[i].y += balls[i].dy * balls[i].elapsed_time * SPEED_y + 1;
+            balls[i].y += balls[i].dy * balls[i].elapsed_time * SPEED_y;
         }
 
 
@@ -170,7 +170,7 @@ function init() {
             //console.log("1 current_time = " + current_time);
             //console.log("1 balls[" + i + "].last_redraw_time = " + balls[i].last_redraw_time);
             //console.log("1 balls[" + i + "].elapsed_time = " + balls[i].elapsed_time);
-            balls[i].elapsed_time = current_time - balls[i].last_redraw_time; //высчитывает, сколько прошло милисек
+            balls[i].elapsed_time = (current_time - balls[i].last_redraw_time) / 1000; //высчитывает, сколько прошло милисек
             balls[i].last_redraw_time = current_time;
             //console.log("2 current_time = " + current_time);
             //console.log("2 balls[" + i + "].last_redraw_time = " + balls[i].last_redraw_time);
