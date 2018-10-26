@@ -168,14 +168,14 @@ function init() {
 
         current_time = get_time();
         for (var i = 0; i < balls.length; i++) {
-            //console.log("1 current_time = " + current_time);
-            //console.log("1 balls[" + i + "].last_redraw_time = " + balls[i].last_redraw_time);
-            //console.log("1 balls[" + i + "].elapsed_time = " + balls[i].elapsed_time);
+            console.log("1 current_time = " + current_time);
+            console.log("1 balls[" + i + "].last_redraw_time = " + balls[i].last_redraw_time);
+            console.log("1 balls[" + i + "].elapsed_time = " + balls[i].elapsed_time);
             balls[i].elapsed_time = current_time - balls[i].last_redraw_time; //высчитывает, сколько прошло милисек
             balls[i].last_redraw_time = current_time;
-            //console.log("2 current_time = " + current_time);
-            //console.log("2 balls[" + i + "].last_redraw_time = " + balls[i].last_redraw_time);
-            //console.log("2 balls[" + i + "].elapsed_time = " + balls[i].elapsed_time);
+            console.log("2 current_time = " + current_time);
+            console.log("2 balls[" + i + "].last_redraw_time = " + balls[i].last_redraw_time);
+            console.log("2 balls[" + i + "].elapsed_time = " + balls[i].elapsed_time);
 
             if (balls[i].elapsed_time > 1000) //если нас не было на странице больше 100 милисек,
                 balls[i].elapsed_time = 1; //то будет считать, что нас не было ровно 100 милисек
