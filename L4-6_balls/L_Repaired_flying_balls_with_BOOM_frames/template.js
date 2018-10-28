@@ -143,6 +143,7 @@ function init() {
 
     //изменяет кадр
         //frame_index = (frame_index + 1) % numFrame;
+        // обнулить кадры при переходе, изменить количество и размер
         for (var i = 0; i < balls.length; i++) {
             if (balls[i].anim === animation_explode && balls[i].frame_index === balls[i].anim.numFrame - 1) {
                 balls.splice(i, 1);
