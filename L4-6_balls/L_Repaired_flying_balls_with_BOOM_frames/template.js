@@ -28,16 +28,17 @@ function init() {
     var startOfAllAnimation = get_time();
     var current_time = startOfAllAnimation;
 
-    var animation_rotate = {frame_index:0, sx:11, sy:11, sWidth:28, sHeight:28,
+    var animation_rotate = {sx:11, sy:11, sWidth:28, sHeight:28,
                             dFrame:50, numFrame:10, FPS:6};
-    //var animation_explode = {sx: 20};
+    var animation_explode = {sx:11, sy:11, sWidth:28, sHeight:28,
+                            dFrame:50, numFrame:10, FPS:6};
 
     var balls = [{x:100, y:140, r:35, dx:1, dy:1, anim:animation_rotate,
                 animation_start_time:startOfAllAnimation, last_redraw_time:startOfAllAnimation,
-                elapsed_time:0},
+                elapsed_time:0, frame_index:0},
                  {x:80, y:400, r:30, dx:1, dy:1, anim:animation_rotate,
                  animation_start_time:startOfAllAnimation, last_redraw_time:startOfAllAnimation,
-                 elapsed_time:0}];
+                 elapsed_time:0, frame_index:0}];
 
     var SPEED_x = 50; // скороксть пикселей в секунду
     var SPEED_y = 50; // скорость пикселей в секунду
@@ -68,16 +69,17 @@ function init() {
         for (var i = 0; i < balls.length; i++)
             if (balls[i].x - balls[i].r - 20 < offsetX && offsetX < balls[i].x + balls[i].r + 20 &&
                 balls[i].y - balls[i].r - 20 < offsetY && offsetY < balls[i].y + balls[i].r + 20) {
-                balls.splice(i, 1);
-                ballDeleted = true;
-                console.log('удалился мяч:' + balls.length);
+                //balls.splice(i, 1);
+                //ballDeleted = true;
+                //console.log('удалился мяч:' + balls.length); - это потом, когда закончатся кадры взрыва
+                //заменить аним
             }
 
         if (!ballDeleted) {
             var ball_created_time = get_time();
             balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1, anim:animation_rotate,
                         animation_start_time:ball_created_time, last_redraw_time:ball_created_time,
-                        elapsed_time:0});
+                        elapsed_time:0, frame_index:0});
             console.log('создался мяч:' + balls.length);
         }
     }
@@ -144,11 +146,11 @@ function init() {
     //изменяет кадр
         //frame_index = (frame_index + 1) % numFrame;
         for (var i = 0; i < balls.length; i++) {
-            balls[i].anim.frame_index = Math.floor((current_time - balls[i].animation_start_time)
+            balls[i].frame_index = Math.floor((current_time - balls[i].animation_start_time)
                                         / 1000 * balls[i].anim.FPS) % balls[i].anim.numFrame;
             //здесь проверить анимацию, и, если взрыв и кадр слишком большой - убиваем шарик
             //изменяет картинку в соответствии с кадром
-            balls[i].anim.sx = 11 + (balls[i].anim.frame_index) * balls[i].anim.dFrame;
+            balls[i].anim.sx = 11 + (balls[i].frame_index) * balls[i].anim.dFrame;
         }
 
     }
