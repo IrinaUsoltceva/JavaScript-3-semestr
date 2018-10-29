@@ -37,10 +37,10 @@ function init() {
     var animation_explode = {otstup:0, sx:0, sy:50, sWidth:50, sHeight:50,
                             dFrame:50, numFrame:7, FPS:1};
 
-    var balls = [{x:100, y:140, r:35, dx:1, dy:1, anim:animation_rotate,
+    var balls = [{sx:11, x:100, y:140, r:35, dx:1, dy:1, anim:animation_rotate,
                 animation_start_time:startOfAllAnimation, last_redraw_time:startOfAllAnimation,
                 elapsed_time:0, frame_index:0},
-                 {x:80, y:400, r:30, dx:1, dy:1, anim:animation_rotate,
+                 {sx:11,x:80, y:400, r:30, dx:1, dy:1, anim:animation_rotate,
                  animation_start_time:startOfAllAnimation, last_redraw_time:startOfAllAnimation,
                  elapsed_time:0, frame_index:0}];
 
@@ -70,17 +70,20 @@ function init() {
         console.log('clicked');
 
         var ballDeleted = false;
-        for (var i = 0; i < balls.length; i++)
+        for (var i = 0; i < balls.length; i++) {
             if (balls[i].x - balls[i].r - 20 < offsetX && offsetX < balls[i].x + balls[i].r + 20 &&
-                balls[i].y - balls[i].r - 20 < offsetY && offsetY < balls[i].y + balls[i].r + 20) {
+                balls[i].y - balls[i].r - 20 < offsetY && offsetY < balls[i].y + balls[i].r + 20)  {
+
                 balls[i].anim = animation_explode;
                 var ball_start_deleting_time = get_time();
                 balls[i].animation_start_time = ball_start_deleting_time;
                 balls[i].last_redraw_time = ball_start_deleting_time;
+                balls[i].elapsed_time = 0;
                 balls[i].frame_index = 0;
 
                 ballDeleted = true;
             }
+        }
 
         if (!ballDeleted) {
             var ball_created_time = get_time();
@@ -159,11 +162,19 @@ function init() {
                 console.log('удалился мяч:' + balls.length);
             }
             else {
-                //if (balls[i].anim === animation_explode)
-                    //console.log(i,balls[i].anim.numFrame,balls[i].frame_index,balls[i].anim.sx);
+            //отладка
+                if (balls[i].anim === animation_explode)
+                    console.log("1_",i, balls[i].frame_index);
+
                 balls[i].frame_index = Math.floor((current_time - balls[i].animation_start_time)
                     / 1000 * balls[i].anim.FPS) % balls[i].anim.numFrame;
                 balls[i].anim.sx = balls[i].anim.otstup + (balls[i].frame_index) * balls[i].anim.dFrame;
+
+            //отладка
+                if (balls[i].anim === animation_explode)
+                    console.log("2_",i, balls[i].frame_index);
+
+
             }
         }
 
