@@ -32,15 +32,15 @@ function init() {
     var startOfAllAnimation = get_time();
     var current_time = startOfAllAnimation;
 
-    var animation_rotate = {otstup:11, sx:11, sy:11, sWidth:28, sHeight:28,
-                            dFrame:50, numFrame:10, FPS:6};
-    var animation_explode = {otstup:0, sx:0, sy:50, sWidth:50, sHeight:50,
-                            dFrame:50, numFrame:7, FPS:1};
+    var animation_rotate = {otstup:11, sy:11, sWidth:28, sHeight:28,
+                            dFrame:50, numFrame:10, FPS:10};
+    var animation_explode = {otstup:0,sy:50, sWidth:50, sHeight:50,
+                            dFrame:50, numFrame:9, FPS:6};
 
     var balls = [{sx:11, x:100, y:140, r:35, dx:1, dy:1, anim:animation_rotate,
                 animation_start_time:startOfAllAnimation, last_redraw_time:startOfAllAnimation,
                 elapsed_time:0, frame_index:0},
-                 {sx:11,x:80, y:400, r:30, dx:1, dy:1, anim:animation_rotate,
+                 {sx:11, x:80, y:400, r:30, dx:1, dy:1, anim:animation_rotate,
                  animation_start_time:startOfAllAnimation, last_redraw_time:startOfAllAnimation,
                  elapsed_time:0, frame_index:0}];
 
@@ -57,7 +57,7 @@ function init() {
          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
          for (var i = 0; i < balls.length; i++) {
-             ctx.drawImage(ball, balls[i].anim.sx, balls[i].anim.sy, balls[i].anim.sWidth, balls[i].anim.sHeight,
+             ctx.drawImage(ball, balls[i].sx, balls[i].anim.sy, balls[i].anim.sWidth, balls[i].anim.sHeight,
                  balls[i].x - balls[i].r, balls[i].y - balls[i].r, // где по х левый верхний угол, где по y левый верхний угол
                  balls[i].r * 2, balls[i].r * 2);                  //dWidth ширина, dHeight высота, 2r
          }
@@ -80,6 +80,7 @@ function init() {
                 balls[i].last_redraw_time = ball_start_deleting_time;
                 balls[i].elapsed_time = 0;
                 balls[i].frame_index = 0;
+                balls[i].sx = 0;
 
                 ballDeleted = true;
             }
@@ -87,7 +88,7 @@ function init() {
 
         if (!ballDeleted) {
             var ball_created_time = get_time();
-            balls.push({x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1, anim:animation_rotate,
+            balls.push({sx:11, x: offsetX, y: offsetY, r: 30, dx: 1, dy: 1, anim:animation_rotate,
                         animation_start_time:ball_created_time, last_redraw_time:ball_created_time,
                         elapsed_time:0, frame_index:0});
             console.log('создался мяч:' + balls.length);
@@ -168,7 +169,7 @@ function init() {
 
                 balls[i].frame_index = Math.floor((current_time - balls[i].animation_start_time)
                     / 1000 * balls[i].anim.FPS) % balls[i].anim.numFrame;
-                balls[i].anim.sx = balls[i].anim.otstup + (balls[i].frame_index) * balls[i].anim.dFrame;
+                balls[i].sx = balls[i].anim.otstup + (balls[i].frame_index) * balls[i].anim.dFrame;
 
             //отладка
                 if (balls[i].anim === animation_explode)
