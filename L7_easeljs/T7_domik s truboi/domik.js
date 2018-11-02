@@ -54,6 +54,9 @@ function init() {
     domic2.regY = 100;
     domic2.x = 310;
     domic2.y = 100;
+    console.log("a");
+    domic2.setTransform(0,0,20, 20, 20);
+    console.log("b");
 
     var domic3 = domic.clone(true);
     domic3.regX = 100;
