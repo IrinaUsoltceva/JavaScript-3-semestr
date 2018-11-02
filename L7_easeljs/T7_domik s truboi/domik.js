@@ -7,7 +7,6 @@ function init() {
         .beginFill("brown")
         .drawRect(0,0,200,100);
     osnova.y = 100;
-    stage.addChild(osnova);
 
     var okno = new createjs.Shape();
     okno.graphics
@@ -24,53 +23,44 @@ function init() {
         .moveTo(40,55)
         .lineTo(80,55)
         .endStroke();
-    okno.regX = 40;
+    okno.regX = 40; //pivot point
     okno.regY = 40;
-    okno.x = 50;
+    okno.x = 50; //где в контейнере
     okno.y = 150;
-    stage.addChild(okno)
+
+    var truba = new createjs.Shape();
+    truba.graphics
+        .beginFill("blue")
+        .drawRect(150,10,40,90);
 
     var krisha = new createjs.Shape();
     krisha.graphics
         .beginFill("green")
         .moveTo(0, 100)
         .lineTo(200,100)
-        .lineTo(100,0)
-        .drawRect(150,10,40,90);
-    stage.addChild(krisha);
+        .lineTo(100,0);
 
+    var domic = new createjs.Container();
+    domic.addChild(osnova, okno, truba, krisha);
+    stage.addChild(domic);
+    domic.regX = 100;
+    domic.regY = 100;
+    domic.x = 100;
+    domic.y = 100;
+    stage.update();
 
+    var domic2 = domic.clone(true);
+    domic2.regX = 100;
+    domic2.regY = 100;
+    domic2.x = 310;
+    domic2.y = 100;
 
-    /*
-        var circle = new createjs.Shape();
-        circle.graphics
-            .beginFill("red")
-            .drawCircle(0, 0, 40);
-        circle.x = 100;//координаты круга в контейнере на сцене
-        circle.y = 100;//т.е. мы говорим, где в контейнере начало координат у shape
-        stage.addChild(circle);
+    var domic3 = domic.clone(true);
+    domic3.regX = 100;
+    domic3.regY = 100;
+    domic3.x = 520;
+    domic3.y = 100;
 
-        var triangle = new createjs.Shape();
-        triangle.graphics
-            .beginFill("green")
-            .moveTo(-20, 0)
-            .lineTo(20, 0)
-            .lineTo(0, -20);
-        stage.addChild(triangle);
-        triangle.x = 100;
-        triangle.y = 100;
-
-        var triangle2 = new createjs.Shape();
-        triangle2.graphics
-            .beginFill(" blue")
-            .moveTo(-20, 0)
-            .lineTo(20, 0)
-            .lineTo(0, -20);
-        stage.addChild(triangle2);
-        triangle2.x = 100;
-        triangle2.y = 100;
-        triangle2.regX = 0; //(0, -20) - это точка в треугольнике - верхняя вершина
-        triangle2.regY = -20; //значит,  в контейнере мы будем указывать координаты верхней вершины
-        //меняет точку отсчета, она же опорная точка, она же pivot point*/
+    stage.addChild(domic, domic2, domic3);
     stage.update();
 }
