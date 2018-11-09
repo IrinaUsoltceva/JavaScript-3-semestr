@@ -38,15 +38,29 @@ function init() {
     brick.regX = BRICK_W / 2;
     brick.regY = BRICK_H / 2;
 
-    var bricks = [[{x:BRICK_X0, y:BRICK_Y0},{x:BRICK_X0 + BRICK_W, y:BRICK_Y0},{x:BRICK_X0 + 2 * BRICK_W, y:BRICK_Y0},{x:BRICK_X0 + 3 * BRICK_W, y:BRICK_Y0},{x:BRICK_X0 + 4 * BRICK_W, y:BRICK_Y0}]
-                    [{x:BRICK_X0 + 2 * BRICK_W, y:BRICK_Y0 + BRICK_Y0}]];
+    var bricks = [
+        [
+            {x: BRICK_X0, y: BRICK_Y0},
+            {x: BRICK_X0 + BRICK_W, y: BRICK_Y0},
+            {x: BRICK_X0 + 2 * BRICK_W, y: BRICK_Y0},
+            {x: BRICK_X0 + 3 * BRICK_W, y: BRICK_Y0},
+            {x: BRICK_X0 + 4 * BRICK_W, y: BRICK_Y0}
+        ], [
+            {x: BRICK_X0 + 2 * BRICK_W, y: BRICK_Y0 + BRICK_Y0}
+        ]
+    ];
     brick.x = 100;
     brick.y = 100;
 
     var bricksContainer = new createjs.Container();
-    for (var i = 0; i < bricks.length; i++)
-        for (var j = 0; j < bricks[i].length; j++)
-            bricksContainer.addChild(bricks[i][j]);
+    for (var i = 0; i < bricks.length; i++) {
+        for (var j = 0; j < bricks[i].length; j++) {
+            var bricki = brick.clone(true);
+            bricki.x = bricks[i][j].x;
+            bricki.y = bricks[i][j].y;
+            bricksContainer.addChild(bricki);
+        }
+    }
 
     brick2 = brick.clone(true);
     brick2.x = 100;
