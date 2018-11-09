@@ -42,7 +42,6 @@ function init() {
 
     var domic = new createjs.Container();
     domic.addChild(osnova, okno, truba, krisha);
-    stage.addChild(domic);
     domic.regX = 100;
     domic.regY = 100;
     domic.x = 100;
@@ -52,15 +51,15 @@ function init() {
     var domic2 = domic.clone(true);
     domic2.regX = 100;
     domic2.regY = 100;
-    domic2.x = 310;
+    domic2.rotation = 30;
+    domic2.x = 360;
     domic2.y = 100;
-    console.log("a");
-    domic2.setTransform(0,0,20, 20, 20);
-    console.log("b");
 
     var domic3 = domic.clone(true);
     domic3.regX = 100;
     domic3.regY = 100;
+    domic3.scaleX = 0.5;
+    domic3.scaleY = 0.5;
     domic3.x = 520;
     domic3.y = 100;
 
