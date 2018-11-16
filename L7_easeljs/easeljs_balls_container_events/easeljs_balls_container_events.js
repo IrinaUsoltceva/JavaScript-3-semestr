@@ -103,7 +103,9 @@ function init() {
     // add_ball(100, 100, 1, 1);
     // add_ball(200, 150, 1, 1);
 
-    createjs.Ticker.addEventListener('tick', stage);
+    createjs.Ticker.addEventListener('tick', function() {
+        stage.update();
+    });
     createjs.Ticker.framerate = 60; //60 в секунду
     createjs.Ticker.timerMode = createjs.Ticker.RAF_SYNCHED;
 }

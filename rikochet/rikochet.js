@@ -30,13 +30,13 @@ var BRICK_Y0 = 100;
 var CAR_W = 100;
 var CAR_H = 30;
 
-var BALL_RADIUS = 20;
+var BALL_RADIUS = 10;
 
 function init() {
     console.info("page loaded");
     var stage = new createjs.Stage("game");
 
-    //сами объекты
+//сами объекты
     //кирпич для постройки
     var brick = new createjs.Shape;
     brick.graphics
@@ -51,16 +51,16 @@ function init() {
     var bricks = [
         [
             {x: BRICK_X0, y: BRICK_Y0},
-            {x: BRICK_X0 + BRICK_W, y: BRICK_Y0},
+            //{x: BRICK_X0 + BRICK_W, y: BRICK_Y0},
             {x: BRICK_X0 + 2 * BRICK_W, y: BRICK_Y0},
-            {x: BRICK_X0 + 3 * BRICK_W, y: BRICK_Y0},
+            //{x: BRICK_X0 + 3 * BRICK_W, y: BRICK_Y0},
             {x: BRICK_X0 + 4 * BRICK_W, y: BRICK_Y0}
         ], [
-            {x: BRICK_X0 + 2 * BRICK_W, y: BRICK_Y0 + BRICK_H}
+            //{x: BRICK_X0 + 2 * BRICK_W, y: BRICK_Y0 + BRICK_H}
         ]
     ];
 
-    //контейнер с кирпичами
+    //контейнер с кирпичами для нарисования
     var bricksContainer = new createjs.Container();
     for (var i = 0; i < bricks.length; i++) {
         for (var j = 0; j < bricks[i].length; j++) {
@@ -78,26 +78,53 @@ function init() {
 
     //мяч
     var ball = new createjs.Shape;
+    ball.x = WIDTH / 2 + 80;
+    ball.y = HEIGHT - CAR_H - BALL_RADIUS;
+    ball.dx = 5;
+    ball.dy = 5;
+    ball.r = BALL_RADIUS;
     ball.graphics
         .beginFill("Black")
-        .drawCircle(WIDTH / 2, HEIGHT - CAR_H - BALL_RADIUS, BALL_RADIUS)
+        .drawCircle(0, 0, ball.r)
         .beginFill("#50afe4")
-        .drawCircle(WIDTH / 2, HEIGHT - CAR_H - BALL_RADIUS, BALL_RADIUS - 1);
+        .drawCircle(0, 0, ball.r  - 1);
+    ball.addEventListener('tick', ball_tick);
 
     stage.addChild(bricksContainer, car, ball);
 
-    /*
+//функции для работы
+
     function ball_tick(e) {
-        console.log('asdf');
-        var ball = e.target; //e - информация о событии, e.target - для кого вызвано
+        var ball = e.target;
         ball.x += ball.dx;
         ball.y += ball.dy;
 
-        if (ball.x > WIDTH - R || ball.x < R)
+        if (ball.x > WIDTH - BALL_RADIUS || ball.x < BALL_RADIUS)
             ball.dx *= -1;
-        if (ball.y > HEIGHT - R || ball.y < R)
+        if (ball.y > HEIGHT - BALL_RADIUS || ball.y < BALL_RADIUS)
             ball.dy *= -1;
-    }*/
+        //если расстояние между центром круга и горизонтальной линией кирпича
+        //меньше, чем радиус, то dx на противоположный
+        /*for (var i = 0; i < bricks.length; i++)
+            for (var j = 0; j < bricks[i].length; j++)
+                if (
+                    (
+                        Math.abs(ball.y - (bricks[i][j].y + BRICK_H / 2)) <= BALL_RADIUS
+                        ||
+                        Math.abs((bricks[i][j].y - BRICK_H / 2) - ball.y) <= BALL_RADIUS
+                    ) && (
+                        ball.x >= bricks[i][j].x - BALL_RADIUS
+                        &&
+                        ball.x <= bricks[i][j].x + BALL_RADIUS
+                    )
+                ){
+                    console.log("напр");
+                    ball.dy *= -1;
+                }*/
+    }
+
+    car.addE
+
 
     createjs.Ticker.addEventListener('tick', stage);
     createjs.Ticker.framerate = 60; //60 в секунду
