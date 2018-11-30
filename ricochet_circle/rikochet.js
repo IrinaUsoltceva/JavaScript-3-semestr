@@ -1,29 +1,7 @@
-/*var BRICK_W = 100;
-var BRICK_H = 30;
-var BRICK_X0 = 0;
-var BRICK_Y0 = 0;
-var BRICKS_IN_LINE = 5;
-var BRICKS_IN_COL = 2;
-
-var level = {
-    bricks: [[1, 2, 1, 2, 1], [0, 0, 1, 0, 0]],            // 1 2 1 2 1
-                                                           //     1
-    car: {x: 50},
-    ball: {x: 0, y: 0}
-};
-
-function init() {
-    var brickViews = createViews(); //создать список brickView (Shape) для всех кирпичиков (не 0)
-    var carView = ... //shape
-    var ballView = ... //shape
-
-    //Timer
-}*/
 var WIDTH = 640;
 var HEIGHT = 640;
 
-var BRICK_W = 100;
-var BRICK_H = 30;
+var BRICK_R = 50;
 var BRICK_X0 = 100;
 var BRICK_Y0 = 100;
 
@@ -42,11 +20,11 @@ function init() {
 
         brick.graphics
             .beginFill("black")
-            .drawRect(0, 0, BRICK_W, BRICK_H)
+            .drawCircle(0, 0, BRICK_R)
             .beginFill("#50afe4")
-            .drawRect(1, 1, BRICK_W - 2, BRICK_H - 2);
-        brick.regX = BRICK_W / 2;
-        brick.regY = BRICK_H / 2;
+            .drawCircle(0, 0, BRICK_R - 2);
+        brick.regX = 0;
+        brick.regY = 0;
 
         return brick;
     }
@@ -55,12 +33,12 @@ function init() {
     var bricks = [
         [
             {x: BRICK_X0, y: BRICK_Y0},
-            //{x: BRICK_X0 + BRICK_W, y: BRICK_Y0},
-            {x: BRICK_X0 + 2 * BRICK_W, y: BRICK_Y0},
-            //{x: BRICK_X0 + 3 * BRICK_W, y: BRICK_Y0},
-            {x: BRICK_X0 + 4 * BRICK_W, y: BRICK_Y0}
+            //{x: BRICK_X0 + BRICK_R, y: BRICK_Y0},
+            {x: BRICK_X0 + 4 * BRICK_R, y: BRICK_Y0},
+            //{x: BRICK_X0 + 6 * BRICK_R, y: BRICK_Y0},
+            {x: BRICK_X0 + 8 * BRICK_R, y: BRICK_Y0}
         ], [
-            //{x: BRICK_X0 + 2 * BRICK_W, y: BRICK_Y0 + BRICK_H}
+            //{x: BRICK_X0 + 2 * BRICK_R, y: BRICK_Y0 + BRICK_H}
         ]
     ];
 
@@ -76,7 +54,15 @@ function init() {
     }
 
     //машина
-    var car = create_brick();
+    var car = new createjs.Shape();
+    car.graphics
+        .beginFill("black")
+        .drawRect(0, 0, CAR_W, CAR_H)
+        .beginFill("#50afe4")
+        .drawRect(1, 1, CAR_W - 2, CAR_H - 2);
+    car.regX = CAR_W / 2;
+    car.regY = CAR_H / 2;
+
     car.x = 50;
     car.y = HEIGHT - CAR_H / 2;
 
@@ -84,8 +70,8 @@ function init() {
     var ball = new createjs.Shape;
     ball.x = car.x;
     ball.y = HEIGHT - CAR_H - BALL_RADIUS;
-    ball.dx = 5;
-    ball.dy = -5;
+    ball.dx = 2;
+    ball.dy = -2;
     ball.r = BALL_RADIUS;
     ball.graphics
         .beginFill("Black")
@@ -111,11 +97,13 @@ function init() {
         ball.x += ball.dx;
         ball.y += ball.dy;
 
+        //стенки
         if (ball.x > WIDTH - BALL_RADIUS || ball.x < BALL_RADIUS)
             ball.dx *= -1;
         if (ball.y < BALL_RADIUS)
             ball.dy *= -1;
 
+        //4 стена
         if (ball.y > HEIGHT - BALL_RADIUS) {
             stage.removeChild(ball);
             stage.addChild(text);
@@ -133,55 +121,14 @@ function init() {
                 stage_condition = 1;
             });
 
-
+        //машина
         if (ball.y >= HEIGHT - CAR_H - BALL_RADIUS &&
             ball.x <= car.x + CAR_W / 2 &&
             ball.x >= car.x - CAR_W / 2)
             ball.dy *= -1;
-
-        //если расстояние между центром круга и горизонтальной линией кирпича
-        //меньше, чем радиус, то dx на противоположный
-        for (var i = 0; i < bricks.length; i++)
-            for (var j = 0; j < bricks[i].length; j++) {
-
-                if (
-                    (
-                        Math.abs(ball.y - (bricks[i][j].y + BRICK_H / 2)) <= BALL_RADIUS
-                        ||
-                        Math.abs((bricks[i][j].y - BRICK_H / 2) - ball.y) <= BALL_RADIUS
-                    ) && (
-                        ball.x >= bricks[i][j].x - BALL_RADIUS
-                        &&
-                        ball.x <= bricks[i][j].x + BALL_RADIUS
-                    )
-                ) {
-                    console.log("напр");
-                    ball.dy *= -1;
-                    //bricks[i].splice(j, 1);
-                    //stage.removeChild(bricks);
-                    //stage.addChild(bricks);
-                    //stage.update();
-                }
-            }
-
-        for (var i = 0; i < bricks.length; i++)
-            for (var j = 0; j < bricks[i].length; j++) {
-                if (
-                    (
-                        Math.abs(ball.x - (bricks[i][j].x + BRICK_W / 2)) <= BALL_RADIUS
-                        ||
-                        Math.abs((bricks[i][j].x - BRICK_W / 2) - ball.x) <= BALL_RADIUS
-                    ) && (
-                        ball.y >= bricks[i][j].y - BALL_RADIUS
-                        &&
-                        ball.y <= bricks[i][j].y + BALL_RADIUS
-                    )
-                ) {
-                    console.log("напр");
-                    ball.dx *= -1;
-                }
-            }
         }
+
+        //брики
 
 
     stage.addEventListener('stagemousemove', function (e) {
