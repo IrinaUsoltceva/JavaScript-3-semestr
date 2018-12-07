@@ -5,6 +5,10 @@ var BRICK_R = 50;
 var BRICK_X0 = 100;
 var BRICK_Y0 = 100;
 
+var deletable_brick_r = 10;
+var deletable_BRICK_X0 = 20;
+var deletable_BRICK_Y0 = 20;
+
 var CAR_W = 100;
 var CAR_H = 30;
 
@@ -29,16 +33,51 @@ function init() {
         return brick;
     }
 
+    function create_deletable_brick() {
+        var brick = new createjs.Shape();
+
+        brick.graphics
+            .beginFill("black")
+            .drawCircle(0, 0, deletable_brick_r)
+            .beginFill("#50afe4")
+            .drawCircle(0, 0, deletable_brick_r - 2);
+        brick.regX = 0;
+        brick.regY = 0;
+
+        return brick;
+    }
+
     //кирпичи на уровне
     var bricks = [
         [
             {x: BRICK_X0, y: BRICK_Y0},
-            //{x: BRICK_X0 + BRICK_R, y: BRICK_Y0},
             {x: BRICK_X0 + 4 * BRICK_R, y: BRICK_Y0},
-            //{x: BRICK_X0 + 6 * BRICK_R, y: BRICK_Y0},
             {x: BRICK_X0 + 8 * BRICK_R, y: BRICK_Y0}
         ], [
-            //{x: BRICK_X0 + 2 * BRICK_R, y: BRICK_Y0 + BRICK_H}
+            {x: BRICK_X0 + 2 * BRICK_R, y: BRICK_Y0 + 3 * BRICK_R},
+            {x: BRICK_X0 + 6 * BRICK_R, y: BRICK_Y0 + 3 * BRICK_R}
+        ]
+    ];
+
+    var deletable_bricks = [
+        [
+            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0},
+            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0},
+            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0},
+            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0},
+            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0},
+            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0},
+            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0},
+        ],
+        [
+            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 6},
+            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 6},
+            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 6},
+            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R * 6},
+            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 6},
+            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R * 6},
+            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 6},
+
         ]
     ];
 
@@ -50,6 +89,16 @@ function init() {
             bricki.x = bricks[i][j].x;
             bricki.y = bricks[i][j].y;
             bricksContainer.addChild(bricki);
+        }
+    }
+
+    var deletableBricksContainer = new createjs.Container();
+    for (i = 0; i < deletable_bricks.length; i++) {
+        for (j = 0; j < deletable_bricks[i].length; j++) {
+            var deletableBricki = create_deletable_brick();
+            deletableBricki.x = deletable_bricks[i][j].x;
+            deletableBricki.y = deletable_bricks[i][j].y;
+            deletableBricksContainer.addChild(deletableBricki);
         }
     }
 
@@ -72,7 +121,7 @@ function init() {
     ball.y = HEIGHT - CAR_H - BALL_RADIUS;
     ball.dx = 1;
     ball.dy = -1;
-    ball.speed = 5;
+    ball.speed = 6;
     ball.r = BALL_RADIUS;
     ball.graphics
         .beginFill("Black")
@@ -88,7 +137,7 @@ function init() {
 
     var stage_condition = 1;
 
-    stage.addChild(bricksContainer, car, ball);
+    stage.addChild(deletableBricksContainer, bricksContainer, car, ball);
 
 
 //функции для работы
@@ -96,27 +145,13 @@ function init() {
     function collide(x0, y0, x, y, dx, dy) {
         var vx = x - x0;
         var vy = y - y0;
-        // var mod_v = Math.sqrt(vx * vx + vy * vy);
         var mod_v2 = vx * vx + vy * vy;
-        console.log(vx, vy, mod_v2);
-        // ball.dx -= 2 * (vx / mod_v) *
-        //     ((vx * ball.dx + vy * ball.dy) / mod_v);
-        // ball.dy -= 2 * (vy / mod_v) *
-        //     ((vx * ball.dx + vy * ball.dy) / mod_v);
-
-        console.log('^', dx, dy);
 
         var dot_prod = vx * dx + vy * dy;
         dx -= 2 * (vx / mod_v2) * dot_prod;
         dy -= 2 * (vy / mod_v2) * dot_prod;
-
-        console.log(2 * (vx / mod_v2) * (dot_prod), 2 * (vy / mod_v2) * (dot_prod));
-        console.log(dx, dy);
-
         return [dx, dy];
     }
-
-    console.log('c', collide(1, 3, 0, 0, 4, 7));
 
     function ball_tick(e) {
         var ball = e.target;
@@ -136,7 +171,7 @@ function init() {
             stage_condition = 0;
         }
 
-        if (stage_condition === 0)
+        if (stage_condition === 0) {
             stage.addEventListener("stagemousedown", function () {
                 ball.x = car.x;
                 ball.y = HEIGHT - CAR_H - BALL_RADIUS;
@@ -147,6 +182,7 @@ function init() {
                 stage.addChild(ball);
                 stage_condition = 1;
             });
+        }
 
         //машина
         if (ball.y >= HEIGHT - CAR_H - BALL_RADIUS &&
@@ -167,8 +203,28 @@ function init() {
 
                     ball.dx = d[0];
                     ball.dy = d[1];
+                }
+            }
+        }
 
-                    console.log("boom", ball.dx * ball.dx + ball.dy * ball.dy);
+        for (i = 0; i < deletable_bricks.length; i++) {
+            for (j = 0; j < deletable_bricks[i].length; j++) {
+                //иными словами, если сумма радиусов больше, чем расстояние между центрами
+                //значит, мячи столкнулись
+                if ((deletable_brick_r + BALL_RADIUS) * (deletable_brick_r + BALL_RADIUS) >=
+                    (deletable_bricks[i][j].x - ball.x) * (deletable_bricks[i][j].x - ball.x) +
+                    (deletable_bricks[i][j].y - ball.y) * (deletable_bricks[i][j].y - ball.y)
+                ) {
+                    d = collide(deletable_bricks[i][j].x, deletable_bricks[i][j].y, ball.x, ball.y, ball.dx, ball.dy);
+
+                    var zaplatka = new createjs.Shape;
+                    zaplatka.graphics
+                        .beginFill("#fff")
+                        .drawCircle(deletable_bricks[i][j].x, deletable_bricks[i][j].y, deletable_brick_r);
+                    stage.addChild(zaplatka);
+                    deletable_bricks[i].splice(j, 1);
+                    ball.dx = d[0];
+                    ball.dy = d[1];
 
                 }
             }
