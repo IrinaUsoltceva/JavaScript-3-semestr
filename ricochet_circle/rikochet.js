@@ -59,7 +59,7 @@ function init() {
         ]
     ];
 
-    var deletable_bricks = [
+    /*var deletable_bricks = [
         [
             {x: deletable_BRICK_X0, y: deletable_BRICK_Y0},
             {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0},
@@ -179,7 +179,32 @@ function init() {
 
         ]
 
-    ];
+    ];*/
+
+    var deletable_bricks = [
+        [],[],[],[],[],[],[],[],[]
+        ];
+
+    fill_deletable_bricks();
+    
+    function fill_deletable_bricks() {
+        for (var i = 0; i < deletable_bricks.length; i++) {
+            if (i === 0 || i === 3 || i === 6 || i === 7 || i === 8)
+                for (var j = 0; j < 13; j++)
+                    deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
+                                              y: deletable_BRICK_Y0 + BRICK_R * i});
+            if (i === 1 || i === 2)
+                for (j = 0; j < 13; j++)
+                    if (j === 0 || j === 3 || j === 4 || j === 7 || j === 8 || j === 11 || j === 12)
+                    deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
+                                              y: deletable_BRICK_Y0 + BRICK_R * i});
+            if (i === 4 || i === 5)
+                for (j = 0; j < 13; j++)
+                    if (!(j === 3 || j === 4 || j === 7 || j === 8))
+                        deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
+                                                  y: deletable_BRICK_Y0 + BRICK_R * i});
+        }
+    }
 
     //контейнер с кирпичами для нарисования
     var bricksContainer = new createjs.Container();
