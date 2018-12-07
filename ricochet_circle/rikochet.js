@@ -131,6 +131,38 @@ function init() {
             {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 5}
         ],
         [
+            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 7},
+            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 7}
+
+        ],
+        [
+            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 8},
+            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 8}
+
+        ],
+        [
             {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 6},
             {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 6},
             {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 6},
