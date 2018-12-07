@@ -47,6 +47,18 @@ function init() {
         return brick;
     }
 
+    var again = new createjs.Shape();
+    again.graphics
+        .beginFill("black")
+        .drawCircle(0, 0, BRICK_R / 2)
+        .beginFill("#20f")
+        .drawCircle(0, 0, BRICK_R / 2 - 2);
+    again.regX = 0;
+    again.regY = 0;
+    again.x = BRICK_R / 2;
+    again.y = HEIGHT - BRICK_R * 2;
+    stage.addChild(again);
+
     //кирпичи на уровне
     var bricks = [
         [
@@ -362,7 +374,7 @@ function init() {
         car.x = e.stageX;
     });
 
-
+    again.addEventListener('click', fill_deletable_bricks);
     createjs.Ticker.addEventListener('tick', stage);
     createjs.Ticker.framerate = 60; //60 в секунду
     createjs.Ticker.timerMode = createjs.Ticker.RAF_SYNCHED;
