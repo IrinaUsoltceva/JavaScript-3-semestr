@@ -19,6 +19,8 @@ function init() {
     var stage = new createjs.Stage("game");
 
 //сами объекты
+
+    var numBalls = 1;
     function create_brick() {
         var brick = new createjs.Shape();
 
@@ -71,128 +73,6 @@ function init() {
         ]
     ];
 
-    /*var deletable_bricks = [
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0}
-        ],
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R},
-            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0 + BRICK_R},
-            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R},
-            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0 + BRICK_R},
-            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R}
-        ],
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 2},
-            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0 + BRICK_R * 2},
-            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R * 2},
-            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0 + BRICK_R * 2},
-            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R * 2},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 2},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 2}
-        ],
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 3},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 3}
-        ],
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 4},
-            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 4},
-            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 4},
-            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0 + BRICK_R * 4},
-            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 4},
-            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0 + BRICK_R * 4},
-            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 4},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 4},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 4}
-        ],
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 5},
-            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 5},
-            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 5},
-            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0 + BRICK_R * 5},
-            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 5},
-            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0 + BRICK_R * 5},
-            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 5},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 5},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 5}
-        ],
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 7},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 7}
-
-        ],
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 8},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 8}
-
-        ],
-        [
-            {x: deletable_BRICK_X0, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 2, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 3, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 4, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 5, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 6, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 7, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 8, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 9, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 10, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 11, y: deletable_BRICK_Y0 + BRICK_R * 6},
-            {x: deletable_BRICK_X0 + BRICK_R * 12, y: deletable_BRICK_Y0 + BRICK_R * 6}
-
-        ]
-
-    ];*/
-
     var deletable_bricks = [
         [],[],[],[],[],[],[],[],[]
         ];
@@ -201,11 +81,13 @@ function init() {
     
     function fill_deletable_bricks() {
         for (var i = 0; i < deletable_bricks.length; i++) {
-            if (i === 0 || i === 3 || i === 6 || i === 7 || i === 8)
-                for (var j = 0; j < 13; j++)
+            if (//i === 0 || i === 3 || i === 6 || i === 7 ||
+                i === 8)
+                //for (var j = 0; j < 13; j++)
+                for (var j = 11; j < 13; j++)
                     deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
                                               y: deletable_BRICK_Y0 + BRICK_R * i});
-            if (i === 1 || i === 2)
+            /*if (i === 1 || i === 2)
                 for (j = 0; j < 13; j++)
                     if (j === 0 || j === 3 || j === 4 || j === 7 || j === 8 || j === 11 || j === 12)
                     deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
@@ -214,7 +96,7 @@ function init() {
                 for (j = 0; j < 13; j++)
                     if (!(j === 3 || j === 4 || j === 7 || j === 8))
                         deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
-                                                  y: deletable_BRICK_Y0 + BRICK_R * i});
+                                                  y: deletable_BRICK_Y0 + BRICK_R * i});*/
         }
     }
 
@@ -268,11 +150,7 @@ function init() {
     ball.addEventListener('tick', ball_tick);
 
     //текст, когда конец
-    var text = new createjs.Text("конец", "20px Arial", "#50afe4");
-    text.x = WIDTH / 2;
-    text.y = HEIGHT / 2;
-
-    var stage_condition = 1;
+    var text;
 
     stage.addChild(deletableBricksContainer, bricksContainer, car, ball);
 
@@ -304,22 +182,12 @@ function init() {
         //4 стена
         if (ball.y > HEIGHT - BALL_RADIUS) {
             stage.removeChild(ball);
+            text = new createjs.Text("кликните для нового мяча (" + numBalls + ")", "40px Arial", "#50afe4");
+            text.x = WIDTH / 2 - 260;
+            text.y = HEIGHT / 2 + 140;
             stage.addChild(text);
-            stage_condition = 0;
         }
 
-        if (stage_condition === 0) {
-            stage.addEventListener("stagemousedown", function () {
-                ball.x = car.x;
-                ball.y = HEIGHT - CAR_H - BALL_RADIUS;
-                ball.dx = 1;
-                ball.dy = -1;
-                ball.speed = 5;
-                stage.removeChild(text);
-                stage.addChild(ball);
-                stage_condition = 1;
-            });
-        }
 
         //машина
         if (ball.y >= HEIGHT - CAR_H - BALL_RADIUS &&
@@ -358,23 +226,60 @@ function init() {
                     zaplatka.graphics
                         .beginFill("#fff")
                         .drawCircle(deletable_bricks[i][j].x, deletable_bricks[i][j].y, deletable_brick_r);
-                    stage.addChild(zaplatka);
+                    stage.addChild(zaplatka, ball);
                     deletable_bricks[i].splice(j, 1);
                     ball.dx = d[0];
                     ball.dy = d[1];
-
+                    stage.update();
                 }
             }
         }
+
+        //если брики закончились
+        var bricksOnStage = deletable_bricks.length;
+        for (i = 0; i < deletable_bricks.length; i++) {
+            if (deletable_bricks[i].length === 0)
+                bricksOnStage -= 1;
+        }
+        if (bricksOnStage === 0) {
+            console.log("конец!");
+            stage.removeChild(ball);
+            text = new createjs.Text("The end, " + numBalls + " attempts", "40px Arial", "#50afe4");
+            text.x = WIDTH / 2 - 160;
+            text.y = HEIGHT / 2 + 100;
+            stage.addChild(text);
+        }
     }
-
-
 
     stage.addEventListener('stagemousemove', function (e) {
         car.x = e.stageX;
     });
 
-    again.addEventListener('click', fill_deletable_bricks);
+    stage.addEventListener("stagemousedown", function () {
+        ball.x = car.x;
+        ball.y = HEIGHT - CAR_H - BALL_RADIUS;
+        ball.dx = 1;
+        ball.dy = -1;
+        ball.speed = 5;
+        stage.removeChild(text);
+        stage.addChild(ball);
+        numBalls += 1;
+        console.log(numBalls);
+    });
+
+    again.addEventListener('click', function () {
+        stage.removeAllChildren();
+        stage.clear();
+        stage.update();
+        for (var i = 0; i < deletable_bricks.length; i++) {
+            deletable_bricks[i].length = 0;
+        }
+        fill_deletable_bricks();
+        stage.addChild(again, deletableBricksContainer, bricksContainer, car, ball);
+        stage.update();
+        numBalls = 0;
+    });
+
     createjs.Ticker.addEventListener('tick', stage);
     createjs.Ticker.framerate = 60; //60 в секунду
     createjs.Ticker.timerMode = createjs.Ticker.RAF_SYNCHED;
