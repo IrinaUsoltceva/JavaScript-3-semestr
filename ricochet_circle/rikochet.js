@@ -59,7 +59,10 @@ function init() {
     again.regY = 0;
     again.x = BRICK_R / 2;
     again.y = HEIGHT - BRICK_R * 2;
-    stage.addChild(again);
+    var againText = new createjs.Text("заново", "14px Arial", "#50afe4");
+    againText.x = 3;
+    againText.y = HEIGHT - BRICK_R * 2 - 8;
+    stage.addChild(again, againText);
 
     //кирпичи на уровне
     var bricks = [
@@ -81,13 +84,13 @@ function init() {
     
     function fill_deletable_bricks() {
         for (var i = 0; i < deletable_bricks.length; i++) {
-            if (//i === 0 || i === 3 || i === 6 || i === 7 ||
+            if (i === 0 || i === 3 || i === 6 || i === 7 ||
                 i === 8)
-                //for (var j = 0; j < 13; j++)
-                for (var j = 11; j < 13; j++)
+                for (var j = 0; j < 13; j++)
+                //for (var j = 11; j < 13; j++)
                     deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
                                               y: deletable_BRICK_Y0 + BRICK_R * i});
-            /*if (i === 1 || i === 2)
+            if (i === 1 || i === 2)
                 for (j = 0; j < 13; j++)
                     if (j === 0 || j === 3 || j === 4 || j === 7 || j === 8 || j === 11 || j === 12)
                     deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
@@ -96,7 +99,7 @@ function init() {
                 for (j = 0; j < 13; j++)
                     if (!(j === 3 || j === 4 || j === 7 || j === 8))
                         deletable_bricks[i].push({x: deletable_BRICK_X0 + BRICK_R * j,
-                                                  y: deletable_BRICK_Y0 + BRICK_R * i});*/
+                                                  y: deletable_BRICK_Y0 + BRICK_R * i});
         }
     }
 
@@ -151,6 +154,7 @@ function init() {
 
     //текст, когда конец
     var text;
+    var finalText;
 
     stage.addChild(deletableBricksContainer, bricksContainer, car, ball);
 
@@ -244,10 +248,10 @@ function init() {
         if (bricksOnStage === 0) {
             console.log("конец!");
             stage.removeChild(ball);
-            text = new createjs.Text("The end, " + numBalls + " attempts", "40px Arial", "#50afe4");
-            text.x = WIDTH / 2 - 160;
-            text.y = HEIGHT / 2 + 100;
-            stage.addChild(text);
+            finalText = new createjs.Text("The end, " + numBalls + " attempts", "40px Arial", "#50afe4");
+            finalText.x = WIDTH / 2 - 160;
+            finalText.y = HEIGHT / 2 + 100;
+            stage.addChild(finalText);
         }
     }
 
@@ -275,9 +279,9 @@ function init() {
             deletable_bricks[i].length = 0;
         }
         fill_deletable_bricks();
-        stage.addChild(again, deletableBricksContainer, bricksContainer, car, ball);
+        stage.addChild(again, againText, deletableBricksContainer, bricksContainer, car, ball);
         stage.update();
-        numBalls = 0;
+        numBalls = 1;
     });
 
     createjs.Ticker.addEventListener('tick', stage);
